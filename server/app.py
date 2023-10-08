@@ -96,6 +96,36 @@ class Users(Resource):
         users = [user.to_dict() for user in User.query.all()] #Serialize users - password hashes shouldnot be sent to client  
         return users, 200
 
+def get_username_from_user_id(user_id):
+    user = db.session.query(User).filter_by(id=user_id).first()
+    print(user)
+    return user.username if user else None
+
+class Books(Resource):
+    def get(self ):
+        if 'user_id' not in session:
+            return {'message': 'Unauthorized'}, 401
+
+        # if session["user_id"]:
+        books = Book.query.all()
+        books_data = []
+
+        for book in books:
+            reviews_data = [{'id':review.id, 'content': review.content, 'username': get_username_from_user_id(review.user_id)} for review in book.reviews]
+            ratings_data = [{'id':rating.id, 'value': rating.value,  'username': get_username_from_user_id(rating.user_id)} for rating in book.ratings]
+            books_data.append({
+                'id': book.id,
+                'author': book.author,
+                'title': book.title,
+                'image': book.image,
+                'pdf': book.pdf,
+                'views': book.views,
+                'reviews': reviews_data,
+                'ratings': ratings_data
+            })
+
+        return (books_data),200
+
 
 api.add_resource(ClearSession, '/clear', endpoint='clear')
 api.add_resource(CheckSession, '/check_session', endpoint='checksession')
@@ -103,6 +133,7 @@ api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(Users, '/users')
+api.add_resource(Books, '/books')
 
 @app.route('/')
 def index():
