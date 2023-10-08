@@ -5,8 +5,8 @@ import Login from "./Login";
 import NavBar from "./NavBar";
 import Home from "./Home";
 import Books from "./Books";
-import MathQuiz from './MathQuiz';
-import Logic from "./Logic";
+import MathQuiz from "./MathQuiz";
+
 // import '../css/Home.css'
 function App() {
   const [user, setUser] = useState(null);
@@ -29,9 +29,9 @@ function App() {
         }
       });
   }, []);
-  console.log(user)
+  console.log(user);
   return (
-    <div  >
+    <div>
       <NavBar user={user} setUser={setUser} />
       <main>
         {user ? (
@@ -40,13 +40,10 @@ function App() {
               <Home user={user} />
             </Route>
             <Route path="/books">
-              <Books user={user}/>
+              <Books user={user} />
             </Route>
             <Route path="/mathquiz">
-              <MathQuiz user={user}/>
-            </Route>
-            <Route path="/logic">
-              <Logic />
+              <MathQuiz user={user} />
             </Route>
           </Switch>
         ) : (
@@ -58,9 +55,8 @@ function App() {
               <Login setUser={setUser} />
             </Route>
             <Route path="/">
-              <Home user={user}/>
+              <Home user={user} />
             </Route>
-            
           </Switch>
         )}
       </main>
