@@ -127,6 +127,30 @@ class Books(Resource):
         return (books_data),200
 
 
+class BookById(Resource):
+    def get(self,book_id):
+        if 'user_id' not in session:
+            return {'message': 'Unauthorized'}, 401
+
+        book = Book.query.filter(Book.id == book_id).first()
+        reviews_data = [{'id':review.id, 'content': review.content, 'username': get_username_from_user_id(review.user_id)} for review in book.reviews]
+        ratings_data = [{'id':rating.id, 'value': rating.value,  'username': get_username_from_user_id(rating.user_id)} for rating in book.ratings]
+
+        book_data = {
+            'id': book.id,
+            'author': book.author,
+            'title': book.title,
+            'image': book.image,
+            'pdf': book.pdf,
+            'views':book.views,
+            'reviews': reviews_data,
+            'ratings': ratings_data
+        }
+
+        return book_data, 200
+
+
+
 api.add_resource(ClearSession, '/clear', endpoint='clear')
 api.add_resource(CheckSession, '/check_session', endpoint='checksession')
 api.add_resource(Signup, '/signup', endpoint='signup')
@@ -134,6 +158,8 @@ api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(Users, '/users')
 api.add_resource(Books, '/books')
+api.add_resource(BookById,'/books/<int:book_id>')
+
 
 @app.route('/')
 def index():
