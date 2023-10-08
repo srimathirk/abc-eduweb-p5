@@ -4,6 +4,11 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from config import db,bcrypt
 
 # Models go here!
+user_books = db.Table('user_books',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+    db.Column('book_id', db.Integer, db.ForeignKey('books.id'), primary_key=True)
+)
+
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
@@ -37,5 +42,50 @@ class User(db.Model, SerializerMixin):
     #         'username': self.username,
     #         'first_name': self.first_name,
     #         'last_name': self.last_name
-         
     #     }
+
+class Book(db.Model, SerializerMixin):
+    __tablename__ = 'books'
+
+    id = db.Column(db.Integer, primary_key=True)
+    author = db.Column(db.String) 
+    title = db.Column(db.String, nullable=False)
+    image = db.Column(db.String)
+    pdf =  db.Column(db.String)
+    views = db.Column(db.Integer, default=0)
+    users = db.relationship('User', secondary=user_books, overlaps="books")
+    reviews = db.relationship('Review', backref='books')
+    ratings = db.relationship('Rating', backref='books')
+    
+    serialize_rules = ('-user_books','-ratings','-reviews')
+
+class Review(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
+    serialize_rules = ('-user',)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'book_id': self.book_id,
+            'content': self.content
+         
+        }
+class Rating(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
+    serialize_rules = ('-user',)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'book_id': self.book_id,
+            'value': self.value
+         
+        }
