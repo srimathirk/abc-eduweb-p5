@@ -16,6 +16,7 @@ const QuizForm = ({ num1, num2, operator, onAnswerSubmit }) => {
       </div>
       <input
         type="number"
+        step="0.01" //for decimal float values
         value={answer}
         onChange={(e) => setAnswer(e.target.value)}
       />
