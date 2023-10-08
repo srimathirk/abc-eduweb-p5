@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 
 function SignUp({ setUser }) {
-  let history = useHistory();
+  // let history = useHistory();
 
   const [username, setUsername] = useState("");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
   const [password, setPassword] = useState("");
+
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [error, setError] = useState(""); //displays error if password didnt match
 
@@ -15,12 +18,11 @@ function SignUp({ setUser }) {
     // Check if passwords match
     if (password !== passwordConfirmation) {
       setError("Passwords do not match");
-      // go back to "/" page if password do not match
-      // history.push("/") 
-
       // Reset form fields
       setUsername("");
       setPassword("");
+      setFirstName("");
+      setLastName("");
       setPasswordConfirmation("");
 
       return;
@@ -36,6 +38,8 @@ function SignUp({ setUser }) {
       },
       body: JSON.stringify({
         username,
+        first_name,
+        last_name,
         password,
         password_confirmation: passwordConfirmation,
       }),
@@ -51,6 +55,22 @@ function SignUp({ setUser }) {
     <div>
       <form onSubmit={handleSubmit}>
         <h1>Sign Up</h1>
+        <label htmlFor="first_name">first_name</label>
+        <input
+          type="text"
+          id="first_name"
+          autoComplete="off"
+          value={first_name}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <label htmlFor="last_name">last_name</label>
+        <input
+          type="text"
+          id="last_name"
+          autoComplete="off"
+          value={last_name}
+          onChange={(e) => setLastName(e.target.value)}
+        />
         <label htmlFor="username">Username</label>
         <input
           type="text"
