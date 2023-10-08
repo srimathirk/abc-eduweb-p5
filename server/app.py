@@ -251,6 +251,42 @@ class AddRating(Resource):
 
         return rating_dict, 201
 
+class BookReviewById(Resource):
+    def get(self, book_id, review_id):
+        # Implement logic to get the review by book_id and review_id
+        # For example, you might use these IDs to query your database
+        
+        # Assuming you have a Review model
+        review = Review.query.filter_by(book_id=book_id, id=review_id).first()
+        
+        if review:
+            review_data = {
+                'id': review.id,
+                'content': review.content,
+                # Add more attributes as needed
+            }
+            return review_data, 200
+        else:
+            return {'message': 'Review not found'}, 404
+
+class BookRatingById(Resource):
+    def get(self, book_id, rating_id):
+        # Implement logic to get the rating by book_id and rating_id
+        # For example, you might use these IDs to query your database
+        
+        # Assuming you have a Rating model
+        rating = Rating.query.filter_by(book_id=book_id, id=rating_id).first()
+        
+        if rating:
+            rating_data = {
+                'id': rating.id,
+                'content': rating.content,
+                # Add more attributes as needed
+            }
+            return rating_data, 200
+        else:
+            return {'message': 'Rating not found'}, 404
+
 
 api.add_resource(ClearSession, '/clear', endpoint='clear')
 api.add_resource(CheckSession, '/check_session', endpoint='checksession')
@@ -262,11 +298,12 @@ api.add_resource(Books, '/books')
 api.add_resource(BookById,'/books/<int:book_id>')
 api.add_resource(Reviews, '/books/reviews')
 api.add_resource(BookReviews, '/books/<int:book_id>/reviews')
+api.add_resource(AddReview,'/books/<int:book_id>/add_review')
 api.add_resource(BookReviewById, '/books/<int:book_id>/reviews/<int:review_id>')
 api.add_resource(Ratings, '/books/ratings')
 api.add_resource(BookRatings, '/books/<int:book_id>/ratings')
 api.add_resource(AddRating,'/books/<int:book_id>/add_rating')
-
+api.add_resource(BookRatingById, '/books/<int:book_id>/ratings/<int:rating_id>')
 
 @app.route('/')
 def index():
