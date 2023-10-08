@@ -3,13 +3,14 @@ import { Switch, Route, Link } from 'react-router-dom';
 import Books from './Books'; // Import your Books, Math, and Logic components
 import MathQuiz from './MathQuiz';
 import Logic from './Logic';
+import '../css/Home.css'
 
 
 function Home({ user }) {
   console.log(user)
   if (user){
   return (
-    <div>
+    <div  >
       <h1>Welcome to the Home {user.username}!</h1>
 
       <nav>
@@ -36,7 +37,7 @@ function Home({ user }) {
   );
 }
 else {
-  return <h1>Please Login or Sign Up</h1>;
+  return <h1 className="bg">Please Login or Sign Up</h1>;
 }
 }
 

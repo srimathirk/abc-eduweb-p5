@@ -7,7 +7,7 @@ import Home from "./Home";
 import Books from "./Books";
 import MathQuiz from './MathQuiz';
 import Logic from "./Logic";
-
+// import '../css/Home.css'
 function App() {
   const [user, setUser] = useState(null);
 
@@ -31,7 +31,7 @@ function App() {
   }, []);
   console.log(user)
   return (
-    <>
+    <div  >
       <NavBar user={user} setUser={setUser} />
       <main>
         {user ? (
@@ -64,7 +64,7 @@ function App() {
           </Switch>
         )}
       </main>
-    </>
+    </div>
   );
 }
 

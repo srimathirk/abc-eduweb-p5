@@ -1,0 +1,7 @@
+.bg {
+    background-image: url('../images/appwallpaper.jpg'); /* Note the leading slash */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+  }
+  
