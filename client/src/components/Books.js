@@ -203,7 +203,7 @@ function Books({ user }) {
       <div>
         <button onClick={toggleForm}>Add New Book</button>
         {showForm && (
-          <NewBookForm onAddBook={handleAddBook} isAdmin={isAdmin} />
+          <NewBookForm onAddBook={handleAddBook}  />
         )}
       </div>
       <div className="searchbar">
