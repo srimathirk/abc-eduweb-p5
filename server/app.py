@@ -161,6 +161,47 @@ class Reviews(Resource):
 
         return reviews,200
 
+class BookReviews(Resource):
+    def get(self, book_id):
+        if 'user_id' not in session:
+            return {'message': 'Unauthorized'}, 401
+
+        book = Book.query.filter(Book.id == book_id).first()
+        reviews_data = [{'content': review.content, 'username': get_username_from_user_id(review.user_id)} for review in book.reviews]
+        return reviews_data, 200
+
+
+
+class AddReview(Resource):
+    def post(self, book_id):
+        if 'user_id' not in session:
+            return {'message': 'Unauthorized'}, 401
+
+        user_id = session['user_id']
+        # user=User.query.filter(User.id == user_id).first()
+        content = request.get_json()['content']
+
+        # Find the book by its ID
+        book = Book.query.filter(Book.id == book_id).first()
+        if not book:
+            return {'message': 'Book not found'}, 404
+
+        # Create a new review associated with the specified user and book
+        review = Review(user_id=user_id, book_id=book.id, content=content)
+        db.session.add(review)
+        db.session.commit()
+
+        # Convert the review object to a dictionary
+        review_dict = {
+            'id': review.id,
+            'username': get_username_from_user_id(review.user_id),
+            'book_id': review.book_id,
+            'content': review.content
+            # Add more fields if necessary
+        }
+
+        return review_dict, 201
+
 
 api.add_resource(ClearSession, '/clear', endpoint='clear')
 api.add_resource(CheckSession, '/check_session', endpoint='checksession')
@@ -171,6 +212,8 @@ api.add_resource(Users, '/users')
 api.add_resource(Books, '/books')
 api.add_resource(BookById,'/books/<int:book_id>')
 api.add_resource(Reviews, '/books/reviews')
+api.add_resource(BookReviews, '/books/<int:book_id>/reviews')
+api.add_resource(BookReviewById, '/books/<int:book_id>/reviews/<int:review_id>')
 
 
 @app.route('/')
