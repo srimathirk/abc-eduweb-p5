@@ -42,12 +42,16 @@ class Signup(Resource):
     
     def post(self):
         username = request.get_json()['username']
+        first_name = request.get_json()['first_name']
+        last_name = request.get_json()['last_name']
         # user = User.query.filter(User.username == username)
 
         password = request.get_json()['password']
         if username and password:
             new_user = User(
-                username=username
+                username=username,
+                first_name=first_name,
+                last_name=last_name,
             )
             new_user.password_hash = password
 
