@@ -149,6 +149,17 @@ class BookById(Resource):
 
         return book_data, 200
 
+class Reviews(Resource):
+    def get(self):
+        if 'user_id' not in session:
+            return {'message': 'Unauthorized'}, 401
+
+        reviews = []
+        for review in Review.query.all():
+            review_dict = review.to_dict()
+            reviews.append(review_dict)
+
+        return reviews,200
 
 
 api.add_resource(ClearSession, '/clear', endpoint='clear')
@@ -159,6 +170,7 @@ api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(Users, '/users')
 api.add_resource(Books, '/books')
 api.add_resource(BookById,'/books/<int:book_id>')
+api.add_resource(Reviews, '/books/reviews')
 
 
 @app.route('/')
