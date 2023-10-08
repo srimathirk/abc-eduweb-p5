@@ -288,6 +288,38 @@ class BookRatingById(Resource):
             return {'message': 'Rating not found'}, 404
 
 
+class DeleteReview(Resource):
+    def delete(self, review_id, book_id):
+        if 'user_id' not in session:
+            return {'message': 'Unauthorized'}, 401
+
+        user_id = session['user_id']
+        review = Review.query.filter_by(id = review_id, book_id=book_id, user_id=user_id).first()
+
+        if review:
+            db.session.delete(review)
+            db.session.commit()
+            return {'message': 'Review deleted successfully'}, 200
+        else:
+            return {'message': 'Review not found or unauthorized'}, 404
+
+class DeleteRating(Resource):
+    def delete(self, rating_id, book_id):
+        if 'user_id' not in session:
+            return {'message': 'Unauthorized'}, 401
+
+        user_id = session['user_id']
+        rating = Rating.query.filter_by(id = rating_id, book_id=book_id, user_id=user_id).first()
+
+        if rating:
+            db.session.delete(rating)
+            db.session.commit()
+            return {'message': 'Rating deleted successfully'}, 200
+        else:
+            return {'message': 'Rating not found or unauthorized'}, 404
+
+
+
 api.add_resource(ClearSession, '/clear', endpoint='clear')
 api.add_resource(CheckSession, '/check_session', endpoint='checksession')
 api.add_resource(Signup, '/signup', endpoint='signup')
@@ -304,6 +336,9 @@ api.add_resource(Ratings, '/books/ratings')
 api.add_resource(BookRatings, '/books/<int:book_id>/ratings')
 api.add_resource(AddRating,'/books/<int:book_id>/add_rating')
 api.add_resource(BookRatingById, '/books/<int:book_id>/ratings/<int:rating_id>')
+api.add_resource(DeleteReview, '/books/<int:book_id>/reviews/<int:review_id>', endpoint='delete_review')
+api.add_resource(DeleteRating, '/books/<int:book_id>/ratings/<int:rating_id>', endpoint='delete_rating')
+
 
 @app.route('/')
 def index():
