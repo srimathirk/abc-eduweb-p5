@@ -201,6 +201,55 @@ class AddReview(Resource):
         }
 
         return review_dict, 201
+class Ratings(Resource):
+    def get(self):
+        if 'user_id' not in session:
+            return {'message': 'Unauthorized'}, 401
+
+        ratings = []
+        for rating in Rating.query.all():
+            rating_dict = rating.to_dict()
+            ratings.append(rating_dict)
+
+        return ratings,200
+
+class BookRatings(Resource):
+    def get(self, book_id):
+        if 'user_id' not in session:
+            return {'message': 'Unauthorized'}, 401
+
+        book = Book.query.filter(Book.id == book_id).first()
+        ratings_data = [{'value': rating.value, 'username': get_username_from_user_id(rating.user_id)} for rating in book.ratings]
+        return ratings_data, 200
+
+
+class AddRating(Resource):
+    def post(self,book_id):
+        
+        if 'user_id' not in session:
+            return {'message': 'Unauthorized'}, 401
+
+        user_id = session['user_id']
+        value = request.get_json()['value']
+        # Find the book by its ID
+        book = Book.query.filter(Book.id == book_id).first()
+        if not book:
+            return {'message': 'Book not found'}, 404
+
+        # Create a new rating associated with the specified user and book
+        rating = Rating(user_id=user_id, book_id=book.id, value=value)
+        db.session.add(rating)
+        db.session.commit()
+
+        rating_dict = {
+            'id': rating.id,
+            'username': get_username_from_user_id(rating.user_id),
+            'book_id': rating.book_id,
+            'value': rating.value
+            # Add more fields if necessary
+        }
+
+        return rating_dict, 201
 
 
 api.add_resource(ClearSession, '/clear', endpoint='clear')
@@ -214,6 +263,9 @@ api.add_resource(BookById,'/books/<int:book_id>')
 api.add_resource(Reviews, '/books/reviews')
 api.add_resource(BookReviews, '/books/<int:book_id>/reviews')
 api.add_resource(BookReviewById, '/books/<int:book_id>/reviews/<int:review_id>')
+api.add_resource(Ratings, '/books/ratings')
+api.add_resource(BookRatings, '/books/<int:book_id>/ratings')
+api.add_resource(AddRating,'/books/<int:book_id>/add_rating')
 
 
 @app.route('/')
