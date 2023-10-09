@@ -45,6 +45,10 @@ class Signup(Resource):
         first_name = request.get_json()['first_name']
         last_name = request.get_json()['last_name']
         # user = User.query.filter(User.username == username)
+        user_exist = User.query.filter(User.username == username).first()
+
+        if user_exist:
+            return {'message': 'Username is not unique'}, 400
 
         password = request.get_json()['password']
         if username and password:
@@ -129,6 +133,42 @@ class Books(Resource):
             })
 
         return (books_data),200
+
+    def post(self):
+        if 'user_id' not in session:
+            return ({'message': 'Unauthorized'}), 401
+
+        user_id = session['user_id']
+        user = User.query.filter(User.id == user_id).first()
+
+        
+        data = request.get_json()
+        if not data:
+            return ({'message': 'Bad Request'}), 400
+
+        new_book = Book(
+            author=data['author'],
+            title=data['title'],
+            image=data['image'],
+            pdf=data['pdf']
+            
+        )
+
+        db.session.add(new_book)
+        db.session.commit()
+
+        return {
+            'id': new_book.id,
+            'author': new_book.author,
+            'title': new_book.title,
+            'image': new_book.image,
+            'pdf': new_book.pdf,
+            'views': new_book.views,
+            'reviews': [],  # Assuming no reviews yet
+            'ratings': []  # Assuming no ratings yet
+        }, 201
+
+
 
 
 class BookById(Resource):

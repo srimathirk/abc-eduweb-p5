@@ -1,6 +1,6 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.hybrid import hybrid_property
-
+from sqlalchemy.orm import validates
 from config import db,bcrypt
 
 # Models go here!
@@ -43,6 +43,19 @@ class User(db.Model, SerializerMixin):
             'first_name': self.first_name,
             'last_name': self.last_name
         }
+    @validates('username')
+    def validate_username(self, key, username):
+        # validation logic, ensure username is present, unique.
+
+        #checking username is present
+        if not username:
+            raise ValueError("Username must be present")
+        #checking username is unique
+        user_exist = User.query.filter(User.username == username).first()
+        if user_exist and user_exist.id != self.id:
+            raise ValueError("Username is not unique")
+        # if user is unique and present return username
+        return username
 
 class Book(db.Model, SerializerMixin):
     __tablename__ = 'books'
