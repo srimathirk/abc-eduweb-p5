@@ -10,7 +10,7 @@ function Home({ user }) {
     return (
       <div className="bbg">
         
-        <h1 >Welcome!! {user.first_name}! Hope You Like It</h1>
+        <h1 >Welcome!! {user.username}! Hope You Like It</h1>
       
         <nav>
           <ul>

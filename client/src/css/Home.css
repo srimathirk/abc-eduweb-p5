@@ -140,15 +140,17 @@ header button {
 
 /* This is a basic button style */
 button {
-  background-color: #007bff; /* Set the background color to a blue shade */
-  color: #fff; /* Set the text color to white */
+  background-color: #37a371; /* Set the background color to a blue shade */
+  color: #1a0c0c; /* Set the text color to white */
   border: none; /* Remove border */
-  padding: 10px 20px; /* Add some padding for better visual */
-  font-size: 16px; /* Set font size */
+  padding: 5px 5px; 
+  font-size: 16px; 
   cursor: pointer; /* Change cursor on hover */
+  margin-right: 10px; 
+  padding-right: 10px; 
 }
 
 /* Style when button is hovered */
 button:hover {
-  background-color: #0056b3; /* Slightly darker shade on hover */
+  background-color: #ade42d; /* Slightly darker shade on hover */
 }

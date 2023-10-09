@@ -28,9 +28,9 @@ if __name__ == '__main__':
             first_name = fake.first_name()
             last_name = fake.last_name()
 
-            username = first_name.lower() + last_name.lower()
+            username = first_name
             while username in usernames:
-                username = fake.first_name().lower() + fake.last_name().lower()
+                username = fake.first_name()
             usernames.append(username)
             
             user = User(
