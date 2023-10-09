@@ -14,6 +14,7 @@ function NavBar({ user, setUser }) {
   console.log(user)
 
   return (
+    <div className="navbar-header">
     <header>
       <div>
         <Link to="/">Home</Link>
@@ -29,6 +30,7 @@ function NavBar({ user, setUser }) {
         )}
       </div>
     </header>
+    </div>
   );
 }
 

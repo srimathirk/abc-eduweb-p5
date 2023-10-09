@@ -52,7 +52,7 @@ function SignUp({ setUser }) {
   }
 
   return (
-    <div>
+    <div className="signup-page">
       <form onSubmit={handleSubmit}>
         <h1>Sign Up</h1>
         <label htmlFor="first_name">first_name</label>

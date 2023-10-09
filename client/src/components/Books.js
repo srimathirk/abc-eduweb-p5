@@ -216,9 +216,9 @@ function Books({ user }) {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-      <ul>
+      <div className="bookGallery">
         {filteredBooks.map((book) => (
-          <li key={book.id}>
+          <div key={book.id}>
             <BookCard
               book={book}
               onAddReviews={handleReviewsSubmit}
@@ -230,9 +230,9 @@ function Books({ user }) {
               reviews={reviews.filter((review) => review.book_id === book.id)}
               ratings={ratings.filter((rating) => rating.book_id === book.id)}
             />
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

@@ -4,4 +4,151 @@
     background-position: center;
     height: 100vh;
   }
+
+  .bbg {
+    background-image: url('../images/bluey.jpg'); /* Note the leading slash */
+    background-size: cover;
+    background-position: center;
+    height: 200vh;
+  }
+
+  .login-page{
+    background-image: url('../images/bookbb.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+  }
+
+
+  .signup-page{
+    background-image: url('../images/bookbg.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #a995df;
+  }
+
+  header a,
+header button {
+  font-size: 1rem;
+  display: inline-block;
+  background-color: #aecdd8;
+  border: 1px solid rgb(189, 237, 201);
+  margin: 1rem;
+  padding: 1rem;
+  text-decoration: none;
+  color: rgb(20, 3, 3);
+  cursor: pointer;
+}
+
+/* form {
+  background-color: #8bc2f2;
+  border: 1px solid rgb(6, 239, 57);
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  margin: 0 auto;
+  padding: 0 1rem 1rem;
+} */
+  .navbar-header{
+    background-color: rgb(230, 233, 235);
+    background-size: cover;
+  }
+  .bookGallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1px;
+    align-items: center;
+    margin: 0 auto;
   
+  }
+
+.card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  max-width: 200px;
+  text-align: center;
+}
+
+.image img {
+  width: 100%;
+  height: auto;
+}
+
+.pdf button {
+  background-color: #f689b6;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* In your home.css file */
+.ratings-list {
+  list-style: none;
+  padding: 0;
+}
+
+.rating {
+  margin-bottom: 10px;
+}
+
+.rating button {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.reviews-list {
+  list-style: none;
+  padding: 0;
+}
+
+.review {
+  margin-bottom: 10px;
+}
+
+.review button {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+
+.ratings-form {
+  margin-top: 10px;
+}
+
+.reviews-form {
+  margin-top: 10px;
+}
+
+/* This is a basic button style */
+button {
+  background-color: #007bff; /* Set the background color to a blue shade */
+  color: #fff; /* Set the text color to white */
+  border: none; /* Remove border */
+  padding: 10px 20px; /* Add some padding for better visual */
+  font-size: 16px; /* Set font size */
+  cursor: pointer; /* Change cursor on hover */
+}
+
+/* Style when button is hovered */
+button:hover {
+  background-color: #0056b3; /* Slightly darker shade on hover */
+}

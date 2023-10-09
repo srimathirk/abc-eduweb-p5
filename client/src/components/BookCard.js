@@ -15,6 +15,11 @@ function BookCard({
   console.log(book);
   const [content, setContent] = useState("");
   const [rating, setRating] = useState("");
+  const [showRatings, setShowRatings] = useState(false);
+
+  const toggleRatings = () => {
+    setShowRatings(prevShowRatings => !prevShowRatings);
+  }
 
   console.log(user);
   console.log(reviews);
@@ -63,36 +68,30 @@ function BookCard({
   };
   console.log(book.id);
 
-  
-    function handleUpdateClick(){
+  function handleUpdateClick() {
     // Sending a POST request to update the view count
     fetch(`/books/${book.id}`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ views: views + 1 }),
     })
-    .then(response => {
-             response.json(); // Assuming the server sends back a JSON response
-    })
-    .then(() => onUpdate(book.id));
+      .then((response) => {
+        response.json(); // Assuming the server sends back a JSON response
+      })
+      .then(() => onUpdate(book.id));
   }
-  
-  
 
   return (
-    <div className="grid-wrapper">
-      <div className="image" >
+    <div className="card">
+      <div className="image">
         <img src={image} alt={title} />
-      </div>
-      <div className="pdf" onClick={handleUpdateClick} >
-        <button onClick={openPdfInNewTab}> Click me to view book  👀{views} </button>
       </div>
       {/* <button className="View-btn" onClick={handleUpdateClick}>
             👀{views}
           </button> */}
-      <div className="content">
+      <div className="details">
         <div className="Title" style={{ color: "darkred", fontWeight: "bold" }}>
           title: {title}
         </div>
@@ -103,30 +102,45 @@ function BookCard({
           >
             author: {author}
           </div>
-          <ul>
+          <div className="pdf" onClick={handleUpdateClick}>
+            <button onClick={openPdfInNewTab}>
+              {" "}
+              Click me to view book 👀{views}{" "}
+            </button>
+          </div>
+          
+          <div className="reviews-list">
             {book.reviews.map((review, index) => (
-              <li key={index}>
-                User({review.username})- Review: {review.content}
+              <div className="review" key={index}>
+                {review.username}- Review:{review.content}
                 {user.username === review.username && (
-                <button onClick={() => handleDelete(book.id, review.id)}>
-                  Delete Review
-                </button>
+                  <button onClick={() => handleDelete(book.id, review.id)}>
+                    Delete
+                  </button>
                 )}
-              </li>
+              </div>
             ))}
-          </ul>
-          <ul>
+          </div>
+      
+      <button onClick={toggleRatings}>
+        Toggle Ratings
+      </button>
+      {showRatings && (
+          <div className="ratings-list">
             {book.ratings.map((rating, index) => (
-              <li key={index}>
-                User({rating.username})- Ratings: {rating.value}
+              <div className="rating" key={index}>
+                {rating.username} - Rating: {rating.value}
                 {user.username === rating.username && (
-                <button onClick={() => handleDeleteRating(book.id, rating.id)}>
-                  Delete
-                </button>
+                  <button
+                    onClick={() => handleDeleteRating(book.id, rating.id)}
+                  >
+                    Delete
+                  </button>
                 )}
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
+      )}
           {/* <ul>
             {addingReviewRating(book.reviews, book.ratings).map(
               (data, index) => {
@@ -140,7 +154,7 @@ function BookCard({
               }
             )}
           </ul> */}
-          <form onSubmit={handleReviewsSubmit}>
+          <form className="reviews-form" onSubmit={handleReviewsSubmit}>
             <input
               type="text"
               value={content}
@@ -149,7 +163,7 @@ function BookCard({
             />
             <button type="submit">Submit Review</button>
           </form>
-          <form onSubmit={handleRatingsSubmit}>
+          <form className="ratings-form" onSubmit={handleRatingsSubmit}>
             <input
               type="number"
               value={rating}
